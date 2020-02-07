@@ -1,0 +1,9 @@
+CREATE OR REPLACE FUNCTION bs_udf_scalar(
+    spotprice FLOAT, strike FLOAT, rate FLOAT, volatility FLOAT, time FLOAT, optiontype STRING)
+RETURNS FLOAT
+LANGUAGE PYTHON {
+    import bs
+    optionprice = bs.BlkSchls(0, spotprice, strike, rate, volatility, time, optiontype)
+    return optionprice
+};
+

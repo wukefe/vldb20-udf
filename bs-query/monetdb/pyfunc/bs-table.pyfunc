@@ -1,0 +1,10 @@
+CREATE OR REPLACE FUNCTION bs_udf_tbl(
+    spotprice FLOAT, strike FLOAT, rate FLOAT, divq FLOAT,
+    volatility FLOAT, time FLOAT, optiontype STRING, divs FLOAT, dgrefval FLOAT)
+RETURNS TABLE(OptionType STRING, SptPrice FLOAT, OptionPrice FLOAT)
+LANGUAGE PYTHON_MAP {
+    import bs
+    optionprice = bs.BlkSchls(0, spotprice, strike, rate, volatility, time, optiontype)
+    return [ optiontype , spotprice , optionprice ]
+};
+
