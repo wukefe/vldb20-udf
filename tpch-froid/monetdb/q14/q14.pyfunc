@@ -1,0 +1,31 @@
+CREATE OR REPLACE FUNCTION promo_disc(ptype STRING, extprice FLOAT, disc FLOAT)
+RETURNS FLOAT
+LANGUAGE PYTHON {
+    import sys
+    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
+    from common import promo_disc
+    return promo_disc(ptype, extprice, disc)
+};
+
+CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
+RETURNS FLOAT
+LANGUAGE PYTHON {
+    import sys
+    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
+    from common import discount_price
+    return discount_price(extprice, disc)
+};
+
+
+SELECT
+    100.00 * sum(promo_disc(p_type, l_extendedprice, l_discount)) /
+        sum( discount_price(l_extendedprice,l_discount))
+        as promo_revenue
+FROM
+    lineitem, part
+WHERE
+    l_partkey = p_partkey and
+    l_shipdate >= '1995-09-01' and
+    l_shipdate < date '1995-09-01' + interval '1' month
+;
+

@@ -1,0 +1,27 @@
+CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
+RETURNS FLOAT
+LANGUAGE PYTHON_MAP {
+    import sys
+    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
+    from common import discount_price
+    return discount_price(extprice, disc)
+};
+
+CREATE OR REPLACE FUNCTION q19conditions(pcontainer STRING, lqty INTEGER, psize INTEGER, shipmode STRING, shipinst STRING, pbrand STRING)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
+    from common import q19conditions
+    return q19conditions(pcontainer, lqty, psize, shipmode, shipinst, pbrand)
+};
+
+SELECT
+    sum(discount_price(l_extendedprice, l_discount)) as revenue
+FROM
+    lineitem join part on l_partkey = p_partkey
+WHERE
+    q19conditions(p_container, l_quantity, p_size, l_shipmode, l_shipinstruct, p_brand)
+;
+
+

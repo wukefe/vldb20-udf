@@ -1,0 +1,42 @@
+CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
+    from common import discount_price
+    return discount_price(extprice, disc)
+};
+
+CREATE OR REPLACE FUNCTION discount_taxprice(extprice FLOAT, disc FLOAT, tax FLOAT)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
+    from common import discount_taxprice
+    return discount_taxprice(extprice, disc, tax)
+};
+
+SELECT
+	l_returnflag,
+	l_linestatus,
+	sum(l_quantity) as sum_qty,
+	sum(l_extendedprice) as sum_base_price,
+	sum(discount_price(l_extendedprice, l_discount)) as sum_disc_price,
+	sum(discount_taxprice(l_extendedprice, l_discount, l_tax)) as sum_charge,
+	avg(l_quantity) as avg_qty,
+	avg(l_extendedprice) as avg_price,
+	avg(l_discount) as avg_disc,
+	count(*) as count_order
+FROM
+	lineitem
+WHERE
+	l_shipdate <= date '1998-12-01' - interval '90' day (3)
+GROUP BY
+	l_returnflag,
+	l_linestatus
+ORDER BY
+	l_returnflag,
+	l_linestatus
+;
+
+
