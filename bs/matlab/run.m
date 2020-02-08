@@ -22,7 +22,7 @@ function run(input_file, runs)
     end
     fprintf('[%s] The average elapsed time with %d runs (ms): %.3f\n', input_file, runs, mean(elapsed)*1000);
     disp(elapsed);
-    disp('Verify top 5 option prices');
+    disp('Verify top 10 option prices');
     disp(OptionPrice(1:10));
 end
 
