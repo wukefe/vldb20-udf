@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION q7conditions(n1name STRING, n2name STRING, shipdate D
 RETURNS BOOLEAN
 LANGUAGE PYTHON_MAP {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import q7conditions
     return q7conditions(n1name, n2name, shipdate)
 };

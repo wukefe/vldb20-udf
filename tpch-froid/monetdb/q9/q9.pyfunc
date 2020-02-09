@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION profit_amount(extprice FLOAT, disc FLOAT, suppcost FL
 RETURNS BOOLEAN
 LANGUAGE PYTHON_MAP {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import profit_amount
     return profit_amount(extprice, disc, suppcost, qty)
 };

@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION promo_disc(ptype STRING, extprice FLOAT, disc FLOAT)
 RETURNS FLOAT
 LANGUAGE PYTHON {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import promo_disc
     return promo_disc(ptype, extprice, disc)
 };
@@ -11,7 +10,6 @@ CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
 RETURNS FLOAT
 LANGUAGE PYTHON {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import discount_price
     return discount_price(extprice, disc)
 };

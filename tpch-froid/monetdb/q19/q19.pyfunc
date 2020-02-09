@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
 RETURNS FLOAT
 LANGUAGE PYTHON_MAP {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import discount_price
     return discount_price(extprice, disc)
 };
@@ -11,7 +10,6 @@ CREATE OR REPLACE FUNCTION q19conditions(pcontainer STRING, lqty INTEGER, psize 
 RETURNS BOOLEAN
 LANGUAGE PYTHON_MAP {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import q19conditions
     return q19conditions(pcontainer, lqty, psize, shipmode, shipinst, pbrand)
 };

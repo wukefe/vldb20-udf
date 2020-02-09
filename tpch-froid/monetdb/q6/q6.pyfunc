@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION q6_cond_proc2_numpy(shipdate DATE, quantity FLOAT, di
 RETURNS BOOLEAN
 LANGUAGE PYTHON_MAP {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import q6conditions
     return q6conditions(shipdate, quantity, discount)
 };

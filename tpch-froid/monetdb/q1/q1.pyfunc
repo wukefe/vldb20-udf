@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
 RETURNS BOOLEAN
 LANGUAGE PYTHON_MAP {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import discount_price
     return discount_price(extprice, disc)
 };
@@ -11,7 +10,6 @@ CREATE OR REPLACE FUNCTION discount_taxprice(extprice FLOAT, disc FLOAT, tax FLO
 RETURNS BOOLEAN
 LANGUAGE PYTHON_MAP {
     import sys
-    sys.path.append("/home/sable/hanfeng.c/github/honey/froid")
     from common import discount_taxprice
     return discount_taxprice(extprice, disc, tax)
 };
