@@ -1,0 +1,58 @@
+CREATE OR REPLACE FUNCTION line_count_high(oprio STRING)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    from common import line_count_high,log,myDate
+    from datetime import datetime
+    start = datetime.now()
+    rtn = line_count_high(oprio)
+    end = datetime.now()
+    log('1. start = %s, end = %s, elapsed time (ms): %g' % (myDate(start),myDate(end),(end-start).microseconds/1000.0))
+    return rtn
+};
+
+CREATE OR REPLACE FUNCTION line_count_low(oprio STRING)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    from common import line_count_low,log,myDate
+    #import time as measure
+    #start = measure.time()
+    from datetime import datetime
+    start = datetime.now()
+    rtn = line_count_low(oprio)
+    end = datetime.now()
+    log('2. start = %s, end = %s, elapsed time (ms): %g' % (myDate(start),myDate(end),(end-start).microseconds/1000.0))
+    return rtn
+};
+
+
+CREATE OR REPLACE FUNCTION q12conditions(shipmode STRING, commitdate DATE, receiptdate DATE, shipdate DATE)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    from common import q12conditions,log,myDate
+    from datetime import datetime
+    start = datetime.now()
+    rtn = q12conditions(shipmode, commitdate, receiptdate, shipdate)
+    end = datetime.now()
+    log('3. start = %s, end = %s, elapsed time (ms): %g' % (myDate(start),myDate(end),(end-start).microseconds/1000.0))
+    return rtn
+};
+
+
+SELECT
+    l_shipmode,
+    sum(line_count_high(o_orderpriority)) as high_line_count,
+    sum(line_count_low(o_orderpriority)) as low_line_count
+FROM
+    orders,
+    lineitem
+WHERE
+    o_orderkey = l_orderkey
+    and q12conditions(l_shipmode, l_commitdate, l_receiptdate, l_shipdate)
+GROUP BY
+    l_shipmode
+ORDER BY
+    l_shipmode
+;

@@ -5,12 +5,16 @@ Add current path to Python's environment path
 
     export PYTHONPATH=$PWD:${PYTHONPATH}
 
+The possible log file 
+
+    froid-example.log
+
 
 ## Commands
 
-See /home/sable/hanfeng.c/github/honey/froid
+Original experimental folder (See readme.md)
 
-    update later
+    /home/sable/hanfeng.c/github/honey/froid
 
 Run server (on sableintel)
 
@@ -26,28 +30,41 @@ Run server (on tigger)
         --set monet_vault_key=/mnt/local/hanfeng/datafarm/2019/TPCHDB/tpch1/.vaultkey \
         --set gdk_nr_threads=1
 
-Run client
+Run a specific query with multiple runs (e.g. 15)
 
-    (time ./runtest | mclient -d tpch1)  &> "sf1/log_thread_1.log"
+    ./run.sh testsql 6 | mclient -d tpch1
+
+Run a specific query only once
+
+    cat q12/q12.pyfunc  | mclient -d tpch1 -t performance
+
+Debugging inside python code
+
+    see q12/q12.pyfunc
+
 
 ## Documents
 
 Froid queries (~/github/honey/froid)
 
+    ------------------------------------------------
      Query | Notes
-    ------------------------
+    ------------------------------------------------
        1   | ready
-       3   | ...
+       3   | ready
+       5   | ready
        6   | ready
        7   | ready
-       9   | ready
+       9   | ready, but runtime error
+       10  | ready
+       12  | ready
        14  | ready
        19  | ready
-    ------------------------
-       5   | date
-       10  | date
-       12  | date
-    ------------------------
+    ------------------------------------------------
+
+Notes
+
+- q11/22 are not included because of nested sql found in their UDFs
 
 
 ### Notes

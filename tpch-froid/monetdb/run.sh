@@ -5,10 +5,13 @@ usage(){
         "Usage: $0 <options>" \
         "  1) exp  sf1              ## run all tests and save to sf1/" \
         "  2) exp2 sf1              ## run with -t performance (cut2.py)" \
-        "  3) service <cmd>         ## turn monetdb [cmd:on/off]" \
+        "  3) service <cmd>         ## turn monetdb [cmd:on/off/reboot]" \
         "  4) mserver <n_thread>    ## generate cmd for entering mserver mode" \
         "  5) testsql  <qid>        ## generate query for tests with qid" \
-        "  6) testsql2 <qid>        ## generate query2"
+        "  6) testsql2 <qid>        ## generate query2" \
+        "Notes:" \
+        "  - froid-example.log: logging information" \
+        "  - cat q12/q12.pyfunc  | mclient -d tpch1 -t performance"
     exit 1
 }
 
@@ -113,6 +116,8 @@ if [ $# -eq 2 ]; then
             (set -x && monetdbd start ${dbfarm})
         elif [ $2 = "off" ]; then
             (set -x && monetdbd stop  ${dbfarm})
+        elif [ $2 = "reboot" ]; then
+            (set -x && monetdbd stop  ${dbfarm} && monetdbd start ${dbfarm})
         else
             usage
         fi

@@ -1,0 +1,45 @@
+CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
+RETURNS FLOAT
+LANGUAGE PYTHON_MAP {
+    import sys
+    from common import discount_price
+    return discount_price(extprice, disc)
+};
+
+CREATE OR REPLACE FUNCTION q10conditions(odate DATE, retflag CHAR)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    from common import q10conditions
+    return q10conditions(odate, retflag)
+};
+
+select
+    c_custkey,
+    c_name,
+    sum(discount_price(l_extendedprice, l_discount)) as revenue,
+    c_acctbal,
+    n_name,
+    c_address,
+    c_phone,
+    c_comment
+from
+    customer, orders, lineitem, nation
+where
+    c_custkey = o_custkey
+    and l_orderkey = o_orderkey
+    and q10conditions(o_orderdate, l_returnflag)
+    and c_nationkey = n_nationkey
+group by
+    c_custkey,
+    c_name,
+    c_acctbal,
+    c_phone,
+    n_name,
+    c_address,
+    c_comment
+order by
+    revenue desc
+limit
+    20
+;

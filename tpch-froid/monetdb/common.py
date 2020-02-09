@@ -54,7 +54,7 @@ def addDate(property, n, dateChar):
         exit(1)
 
 def log(msg):
-    os.chdir('/home/sable/hanfeng.c/github/honey/froid')
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     logging.basicConfig(filename='froid-example.log', filemode='w', level=logging.DEBUG)
     logging.debug(msg)
 

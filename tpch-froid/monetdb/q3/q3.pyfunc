@@ -1,0 +1,35 @@
+CREATE OR REPLACE FUNCTION discount_price(extprice FLOAT, disc FLOAT)
+RETURNS FLOAT
+LANGUAGE PYTHON_MAP {
+    import sys
+    from common import discount_price
+    return discount_price(extprice, disc)
+};
+
+CREATE OR REPLACE FUNCTION q3conditions(cmkt STRING, odate DATE, shipdate DATE)
+RETURNS BOOLEAN
+LANGUAGE PYTHON_MAP {
+    import sys
+    from common import q3conditions
+    return q3conditions(cmkt, odate, shipdate)
+};
+
+SELECT
+    l_orderkey,
+    sum(discount_price(l_extendedprice, l_discount)) as revenue,
+    o_orderdate, o_shippriority
+FROM
+    customer,
+    orders,
+    lineitem
+WHERE
+    c_custkey = o_custkey
+    and l_orderkey = o_orderkey
+    and q3conditions(c_mktsegment, o_orderdate, l_shipdate)
+GROUP BY
+    l_orderkey, o_orderdate, o_shippriority
+ORDER BY
+    revenue desc, o_orderdate
+LIMIT
+    10
+;
