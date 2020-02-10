@@ -1,0 +1,13 @@
+% .plan # table_name
+% rel # name
+% clob # type
+% 547 # length
+top N (
+| project (
+| | project (
+| | | select (
+| | | | table(sys.blackscholes) [ "blackscholes"."sptprice" NOT NULL, "blackscholes"."strike" NOT NULL, "blackscholes"."rate" NOT NULL, "blackscholes"."volatility" NOT NULL, "blackscholes"."time" NOT NULL, "blackscholes"."optiontype" NOT NULL ] COUNT 
+| | | ) [ decimal(15,6)[tinyint "51"] <= "blackscholes"."sptprice" NOT NULL <= decimal(15,6)[tinyint "100"] ASC ]
+| | ) [ "blackscholes"."sptprice" NOT NULL, "blackscholes"."optiontype" NOT NULL, sys.bs_udf_scalar(double["blackscholes"."sptprice" NOT NULL] as "blackscholes"."sptprice", double["blackscholes"."strike" NOT NULL] as "blackscholes"."strike", double["blackscholes"."rate" NOT NULL] as "blackscholes"."rate", double["blackscholes"."volatility" NOT NULL] as "blackscholes"."volatility", double["blackscholes"."time" NOT NULL] as "blackscholes"."time", clob["blackscholes"."optiontype" NOT NULL] as "blackscholes"."optiontype") as "L1"."optionprice" ]
+| ) [ "blackscholes"."sptprice" NOT NULL, "blackscholes"."optiontype" NOT NULL, "L1"."optionprice" ]
+) [ bigint "10" ]

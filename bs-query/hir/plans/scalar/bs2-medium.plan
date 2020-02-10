@@ -1,0 +1,11 @@
+% .plan # table_name
+% rel # name
+% clob # type
+% 134 # length
+top N (
+| project (
+| | select (
+| | | table(sys.blackscholes) [ "blackscholes"."sptprice" NOT NULL, "blackscholes"."optiontype" NOT NULL ] COUNT 
+| | ) [ decimal(15,6)[tinyint "51"] <= "blackscholes"."sptprice" NOT NULL <= decimal(15,6)[tinyint "100"] ASC ]
+| ) [ "blackscholes"."sptprice" NOT NULL as "table_bs0"."sptprice", "blackscholes"."optiontype" NOT NULL as "table_bs0"."optiontype" ]
+) [ bigint "10" ]
