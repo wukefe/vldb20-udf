@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+testsql(){
+    echo "-- Testing query $1"
+    for i in {1..5}
+    do
+        cat "${HORSE_BASE}/tpch/query/$1.sql"
+    done
+    echo "call sys.querylog_empty();"
+    echo "call sys.querylog_enable();"
+    for i in {1..10}
+    do
+        cat "${HORSE_BASE}/tpch/query/$1.sql"
+    done
+    echo "call sys.querylog_disable();"
+    echo "select * from sys.querylog_history;"
+    echo "select run/1000 as query_time from sys.querylog_history where query like '%select%';"
+    echo "select avg(run)/1000 as avg_query$1 from sys.querylog_history where query like '%select%';"
+}
+
+#query=(1 4 6 12 14 16 19 22)
+query=(14)
+for id in ${query[@]}
+#for id in {1..22}
+do
+    testsql $id
+done
+
